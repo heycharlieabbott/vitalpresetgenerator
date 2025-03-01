@@ -1,1 +1,3 @@
 *.DS_Store
+*.vital
+__pycache__

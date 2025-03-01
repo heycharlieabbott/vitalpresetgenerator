@@ -274,27 +274,27 @@ def get_style_ranges(style):
             "osc_level": (0.6, 0.9),
             "filter_cutoff": (40, 100),
             "env_attack": (0.1, 0.5),
-            "env_decay": (0.4, 0.8),
-            "env_sustain": (0.4, 0.8),
-            "env_release": (0.3, 0.7)
+            "env_decay": (0.4, 3.0),
+            "env_sustain": (0.4, 1.0),
+            "env_release": (0.3, 5.0)
         },
         "Bass": {
             "polyphony": (1, 4),
             "osc_level": (0.7, 1.0),
             "filter_cutoff": (20, 80),
             "env_attack": (0, 0.3),
-            "env_decay": (0.3, 0.6),
-            "env_sustain": (0.3, 0.7),
-            "env_release": (0.2, 0.5)
+            "env_decay": (0.3, 3.0),
+            "env_sustain": (0.3, 1.0),
+            "env_release": (0.2, 6.0)
         },
         "Lead": {
             "polyphony": (1, 4),
             "osc_level": (0.6, 0.9),
             "filter_cutoff": (40, 120),
-            "env_attack": (0, 0.2),
-            "env_decay": (0.3, 0.7),
-            "env_sustain": (0.4, 0.8),
-            "env_release": (0.2, 0.5)
+            "env_attack": (0, 3.0),
+            "env_decay": (0.3, 3.0),
+            "env_sustain": (0.4, 1.0),
+            "env_release": (0.2, 6.0)
         },
         "Pad": {
             "polyphony": (4, 32),
@@ -309,17 +309,17 @@ def get_style_ranges(style):
             "polyphony": (4, 16),
             "osc_level": (0.6, 0.9),
             "filter_cutoff": (60, 120),
-            "env_attack": (0, 0.1),
-            "env_decay": (0.2, 0.5),
-            "env_sustain": (0, 0.3),
+            "env_attack": (0, 3.0),
+            "env_decay": (0.2, 6.0),
+            "env_sustain": (0, 1.0),
             "env_release": (0.2, 0.4)
         },
         "FX": {
             "polyphony": (1, 32),
             "osc_level": (0.5, 1.0),
             "filter_cutoff": (20, 120),
-            "env_attack": (0, 1.0),
-            "env_decay": (0.3, 1.0),
+            "env_attack": (0, 3.0),
+            "env_decay": (0.3, 6.0),
             "env_sustain": (0, 1.0),
             "env_release": (0.3, 1.0)
         },
@@ -328,18 +328,18 @@ def get_style_ranges(style):
             "osc_level": (0.7, 1.0),
             "filter_cutoff": (60, 120),
             "env_attack": (0, 0.1),
-            "env_decay": (0.1, 0.4),
-            "env_sustain": (0, 0.2),
-            "env_release": (0.1, 0.3)
+            "env_decay": (0.1, 6.0),
+            "env_sustain": (0, 1.0),
+            "env_release": (0.1, 1.3)
         },
         "Sequence": {
             "polyphony": (4, 16),
             "osc_level": (0.6, 0.9),
             "filter_cutoff": (40, 100),
-            "env_attack": (0, 0.2),
-            "env_decay": (0.2, 0.5),
-            "env_sustain": (0.2, 0.6),
-            "env_release": (0.2, 0.5)
+            "env_attack": (0, 1.0),
+            "env_decay": (0.2, 6.0),
+            "env_sustain": (0.2, 1.0),
+            "env_release": (0.2, 1.5)
         }
     }
     return ranges.get(style, ranges["Keys"])  # Default to Keys if style not found
