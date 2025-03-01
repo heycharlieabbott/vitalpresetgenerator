@@ -15,16 +15,110 @@ def random_name(length=8):
     return ''.join(random.choices(string.ascii_letters, k=length))
 
 def generate_random_lfo():
-    shapes = ["Triangle", "Saw Up", "Square", "Random"]
-    return {
-        "name": random.choice(shapes),
-        "num_points": 3,
-        "points": [0.0, 1.0, 0.5, 0.0, 1.0, 1.0],  # Standard wave points
-        "powers": [0.0, 0.0, 0.0],
-        "smooth": random.choice([True, False])
-    }
+    # List of possible LFO shapes with their typical point configurations
+    lfo_shapes = [
+        # Basic shapes
+        {
+            "name": "Triangle",
+            "num_points": 3,
+            "points": [0.0, 1.0, 0.5, 0.0, 1.0, 1.0],
+            "powers": [0.0, 0.0, 0.0],
+            "smooth": False
+        },
+        # Saw shapes
+        {
+            "name": "Saw Up",
+            "num_points": 3,
+            "points": [0.0, 1.0, 1.0, 0.0, 1.0, 1.0],
+            "powers": [0.0, 0.0, 0.0],
+            "smooth": False
+        },
+        {
+            "name": "Saw Down",
+            "num_points": 3,
+            "points": [0.0, 0.0, 1.0, 1.0, 1.0, 0.0],
+            "powers": [0.0, 0.0, 0.0],
+            "smooth": False
+        },
+        # Bipolar triangle
+        {
+            "name": "Bi polar Tri",
+            "num_points": 4,
+            "points": [0.0, 0.5, 0.25, 0.0, 0.75, 1.0, 1.0, 0.5],
+            "powers": [0.0, 0.0, 0.0, 0.0],
+            "smooth": False
+        },
+        # Square-like
+        {
+            "name": "Square",
+            "num_points": 4,
+            "points": [0.0, 1.0, 0.0, 1.0, 0.5, 0.0, 1.0, 1.0],
+            "powers": [0.0, 0.0, 0.0, 0.0],
+            "smooth": False
+        }
+    ]
+    
+    # Randomly choose between predefined shape or generate custom shape
+    if random.random() < 0.7:  # 70% chance of using predefined shape
+        base_shape = random.choice(lfo_shapes)
+        
+        # Randomly modify the points slightly
+        modified_points = []
+        for i in range(0, len(base_shape["points"]), 2):
+            x = base_shape["points"][i]
+            y = base_shape["points"][i + 1]
+            # Add small random variations to y values while keeping x values
+            modified_points.extend([x, y + random.uniform(-0.1, 0.1)])
+            
+        # Generate random powers
+        num_powers = base_shape["num_points"]
+        powers = [random.uniform(-4.0, 4.0) for _ in range(num_powers)]
+        
+        return {
+            "name": base_shape["name"],
+            "num_points": base_shape["num_points"],
+            "points": modified_points,
+            "powers": powers,
+            "smooth": random.choice([True, False])
+        }
+    else:  # 30% chance of generating custom shape
+        num_points = random.randint(3, 8)
+        points = []
+        
+        # Generate points with x values in ascending order
+        x_values = sorted([random.random() for _ in range(num_points)])
+        x_values[0] = 0.0  # Force first x to 0
+        x_values[-1] = 1.0  # Force last x to 1
+        
+        for x in x_values:
+            points.extend([x, random.random()])
+            
+        return {
+            "name": f"Custom {random.randint(1, 100)}",
+            "num_points": num_points,
+            "points": points,
+            "powers": [random.uniform(-4.0, 4.0) for _ in range(num_points)],
+            "smooth": random.choice([True, False])
+        }
 
 def generate_random_wavetable():
+    # Generate a random number of keyframes (between 2 and 8)
+    num_keyframes = random.randint(2, 8)
+    
+    # Generate random positions and sort them
+    positions = sorted([random.randint(0, 256) for _ in range(num_keyframes)])
+    
+    # Generate keyframes with random properties
+    keyframes = []
+    for pos in positions:
+        keyframe = {
+            "position": pos,
+            "start_position": random_float(0, 4000),  # Random start position in samples
+            "window_fade": random_float(0.5, 1.0),    # Random fade between 50% and 100%
+            "window_size": float(random.choice([1024, 4096]))  # Window size must be either 1024 or 4096
+        }
+        keyframes.append(keyframe)
+    
     return {
         "author": "",
         "full_normalize": False,
@@ -36,20 +130,7 @@ def generate_random_wavetable():
                         "audio_sample_rate": 44100,
                         "fade_style": 2,
                         "interpolation_style": 1,
-                        "keyframes": [
-                            {
-                                "position": 0,
-                                "start_position": 0.0,
-                                "window_fade": 1.0,
-                                "window_size": 2048.0
-                            },
-                            {
-                                "position": 256,
-                                "start_position": 3465.0,
-                                "window_fade": 1.0,
-                                "window_size": 2048.0
-                            }
-                        ],
+                        "keyframes": keyframes,
                         "normalize_gain": True,
                         "normalize_mult": False,
                         "phase_style": 2,
@@ -65,7 +146,7 @@ def generate_random_wavetable():
         "version": "1.5.5"
     }
 
-def generate_random_modulation(empty_mod_chance=70):
+def generate_random_modulation(empty_mod_chance=0):
     destinations = [
         # Oscillator 1 parameters
         "osc_1_transpose", "osc_1_tune", "osc_1_level", "osc_1_pan",
@@ -295,7 +376,7 @@ def generate_random_preset(preset_style="Random", volume_range=(1000, 8000), pol
         "synth_version": "1.5.5",
         "settings": {
             # Basic settings
-            "volume": 8000,
+            "volume": 6000.0,
             "polyphony": float(random.randint(*polyphony_range)),
             "oversampling": 0.0,
             "beats_per_minute": 2.0,
@@ -307,6 +388,22 @@ def generate_random_preset(preset_style="Random", volume_range=(1000, 8000), pol
             "voice_priority": float(random.randint(0, 8)),
             "voice_transpose": float(random.randint(-24, 24)),
             "voice_tune": random_float(-1, 1),
+            
+            # Effect on/off states
+            "chorus_on": random_bool(),
+            "compressor_on": random_bool(),
+            "delay_on": random_bool(),
+            "distortion_on": random_bool(),
+            "eq_on": random_bool(),
+            "flanger_on": random_bool(),
+            "phaser_on": random_bool(),
+            "reverb_on": random_bool(),
+            "sample_on": random_bool(),
+            
+            # Filter on/off states
+            "filter_1_on": random_bool(),
+            "filter_2_on": random_bool(),
+            "filter_fx_on": random_bool(),
             
             # Oscillator settings (for each oscillator)
             **{f"osc_{i}_on": random_bool() for i in range(1, 4)},
@@ -328,7 +425,6 @@ def generate_random_preset(preset_style="Random", volume_range=(1000, 8000), pol
             **{f"osc_{i}_spectral_morph_spread": random_float(0, 1) for i in range(1, 4)},
             
             # Filter settings
-            "filter_1_on": random_bool(),
             "filter_1_cutoff": random_float(*style_ranges["filter_cutoff"]),
             "filter_1_resonance": random_float(0, 1),
             "filter_1_blend": random_float(0, 1),
@@ -347,14 +443,12 @@ def generate_random_preset(preset_style="Random", volume_range=(1000, 8000), pol
             **{f"env_{i}_release_power": random_float(-4, 4) for i in range(1, 7)},
             
             # Effects
-            "reverb_on": random_bool(),
             "reverb_decay_time": random_float(-5, 5),
             "reverb_dry_wet": random_float(0, 1),
             "reverb_size": random_float(0, 1),
             "reverb_high_shelf_cutoff": random_float(20, 120),
             "reverb_low_shelf_cutoff": random_float(0, 100),
             
-            "delay_on": random_bool(),
             "delay_feedback": random_float(0, 0.95),
             "delay_dry_wet": random_float(0, 1),
             "delay_tempo": float(random.randint(2, 16)),

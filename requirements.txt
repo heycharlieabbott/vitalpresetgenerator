@@ -1,0 +1,2 @@
+# Python packages
+# tk is provided by the system/Homebrew installation 
