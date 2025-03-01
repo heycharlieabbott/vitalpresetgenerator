@@ -3,6 +3,9 @@ import random
 import string
 import math
 import os
+import zipfile
+import shutil
+from datetime import datetime
 from wavetable_data import WAVETABLE_DATA
 
 def random_float(min_val, max_val):
@@ -507,8 +510,42 @@ def save_random_preset(output_dir="random_presets", preset_style="Random", volum
     
     return filepath
 
+def generate_vitaltable(num_presets=5, output_dir="random_presets"):
+    # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Generate multiple presets
+    preset_files = []
+    for i in range(num_presets):
+        filepath = save_random_preset(output_dir)
+        preset_files.append(filepath)
+    
+    # Create a zip file with .vitaltable extension
+    zip_name = f"{random_name()}"
+    zip_path = os.path.join(output_dir, f"{zip_name}.zip")
+    vitaltable_path = os.path.join(output_dir, f"{zip_name}.vitalbank")
+    
+    # Get current datetime for folder name
+    current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    folder_name = f"RANDOM_{current_time}"
+    
+    # Create zip file containing all presets in a Presets folder
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for preset_file in preset_files:
+            # Store each preset in the Presets folder within the zip
+            arcname = os.path.join(folder_name, 'Presets', os.path.basename(preset_file))
+            zipf.write(preset_file, arcname)
+    
+    # Rename zip file to .vitaltable
+    shutil.move(zip_path, vitaltable_path)
+    
+    # Clean up individual .vital files
+    for preset_file in preset_files:
+        os.remove(preset_file)
+    
+    return vitaltable_path
+
 if __name__ == "__main__":
-    # Generate 5 random presets as an example
-    for i in range(5):
-        filepath = save_random_preset()
-        print(f"Generated preset: {filepath}") 
+    # Generate a vitaltable with 5 random presets
+    vitaltable_path = generate_vitaltable(100)
+    print(f"Generated vitaltable: {vitaltable_path}") 
