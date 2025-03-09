@@ -1,0 +1,6 @@
+*.DS_Store
+*.vital
+__pycache__
+*.vitalbank
+*.vitaltable
+*node_modules
