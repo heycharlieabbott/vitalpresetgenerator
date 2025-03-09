@@ -1,6 +1,6 @@
 # Vital Preset Generator
 
-A web application that generates random presets for the [Vital synthesizer](https://vital.audio/). This tool creates randomized preset banks that can be directly imported into Vital, offering a source of inspiration for sound design.
+A web application that generates random presets for the [Vital synthesizer](https://vital.audio/). This tool creates randomized preset banks that can be directly imported into Vital, offering a source of inspiration for sound design. Try it out at https://vitalpresetgenerator.heycharlieabbott.com/
 
 ## Project History
 
@@ -59,25 +59,25 @@ Please save your work before auditioning new presets and be cautious when naviga
 ### Installation
 
 1. Clone the repository:
-   \`\`\`bash
+   \`\`\`
    git clone https://github.com/yourusername/vitalpresetgenerator.git
    cd vitalpresetgenerator
    \`\`\`
 
 2. Install dependencies:
-   \`\`\`bash
+   \`\`\`
    npm install
    \`\`\`
 
 3. Start the development server:
-   \`\`\`bash
+   \`\`\`
    npm run dev
    \`\`\`
 
 ### Building for Production
 
 To create a production build:
-\`\`\`bash
+\`\`\`
 npm run build
 \`\`\`
 
