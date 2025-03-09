@@ -3,3 +3,4 @@
 __pycache__
 *.vitalbank
 *.vitaltable
+*node_modules

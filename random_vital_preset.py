@@ -144,7 +144,7 @@ def generate_random_wavetable():
                 ]
             }
         ],
-        "name": "test",
+        "name": "fm sine",
         "remove_all_dc": False,
         "version": "1.5.5"
     }
@@ -510,7 +510,7 @@ def save_random_preset(output_dir="random_presets", preset_style="Random", volum
     
     return filepath
 
-def generate_vitaltable(num_presets=5, output_dir="random_presets"):
+def generate_vitalbank(num_presets=5, output_dir="random_presets"):
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
     
@@ -520,10 +520,10 @@ def generate_vitaltable(num_presets=5, output_dir="random_presets"):
         filepath = save_random_preset(output_dir)
         preset_files.append(filepath)
     
-    # Create a zip file with .vitaltable extension
+    # Create a zip file with .vitalbank extension
     zip_name = f"{random_name()}"
     zip_path = os.path.join(output_dir, f"{zip_name}.zip")
-    vitaltable_path = os.path.join(output_dir, f"{zip_name}.vitalbank")
+    vitalbank_path = os.path.join(output_dir, f"{zip_name}.vitalbank")
     
     # Get current datetime for folder name
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -536,16 +536,16 @@ def generate_vitaltable(num_presets=5, output_dir="random_presets"):
             arcname = os.path.join(folder_name, 'Presets', os.path.basename(preset_file))
             zipf.write(preset_file, arcname)
     
-    # Rename zip file to .vitaltable
-    shutil.move(zip_path, vitaltable_path)
+    # Rename zip file to .vitalbank
+    shutil.move(zip_path, vitalbank_path)
     
     # Clean up individual .vital files
     for preset_file in preset_files:
         os.remove(preset_file)
     
-    return vitaltable_path
+    return vitalbank_path
 
 if __name__ == "__main__":
-    # Generate a vitaltable with 5 random presets
-    vitaltable_path = generate_vitaltable(100)
-    print(f"Generated vitaltable: {vitaltable_path}") 
+    # Generate a vitalbank with 100 random presets
+    vitalbank_path = generate_vitalbank(100)
+    print(f"Generated vitalbank: {vitalbank_path}") 
