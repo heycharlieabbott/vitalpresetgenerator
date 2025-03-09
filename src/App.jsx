@@ -44,7 +44,7 @@ function App() {
         alignItems: "center",
         gap: "20px",
         padding: "20px",
-        maxWidth: "1000px",
+        maxWidth: "1500px",
         margin: "0 auto",
       }}
     >
@@ -53,16 +53,20 @@ function App() {
       <div
         style={{
           color: "white",
-          textAlign: "center",
-          lineHeight: "1.6",
+          textAlign: "left",
+          lineHeight: "1.8",
         }}
       >
         <p>
-          This app generates random presets for the Vital synthesizer. Each
+          - This app generates random presets for the Vital synthesizer. Each
           preset includes randomized settings for oscillators, filters,
-          envelopes, LFOs, and effects, creating unique and unexpected sounds.
-          You can generate between 1 and 1000 presets at once, which will be
-          packaged into a .vitalbank file that can be imported into Vital.
+          envelopes, LFOs, and effects. <br />- You can generate between 1 and
+          1000 presets at once, which will be packaged into a .vitalbank file
+          that can be imported into Vital. <br /> - Some presets might be
+          generated such that all oscillators are turned off by default, the
+          volume may be too low, or the filters may cut out most audible audio
+          information. <br />- Generated presets can serve as a starting point
+          for creating your own presets.
         </p>
 
         <div
